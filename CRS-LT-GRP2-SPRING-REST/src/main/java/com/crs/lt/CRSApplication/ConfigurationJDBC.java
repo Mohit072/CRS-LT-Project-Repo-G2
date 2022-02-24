@@ -16,6 +16,13 @@ public class ConfigurationJDBC {
         dataSource.setUrl("jdbc:mysql://localhost:3306/crs");//change url
         dataSource.setUsername("spring_user");//change userid
         dataSource.setPassword("spring_user");//change pwd
+
+        //H2 database
+		/*
+	    dataSource.setDriverClassName("org.h2.Driver");
+	    dataSource.setUrl("jdbc:h2:tcp://localhost/~/test");
+	    dataSource.setUsername("sa");
+	    dataSource.setPassword("");*/
         return dataSource;
     }
 

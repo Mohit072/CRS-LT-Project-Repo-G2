@@ -55,7 +55,7 @@ public class AdminServiceImplementation implements AdminService {
 	}
 
 	@Override
-	public void assignCourse(String courseCode, String professorId) {
+	public void assignCourse(String courseCode, int professorId) {
 		try {
 			adminDao.assignCourse(courseCode, professorId);
 			System.out.println("Course Successfully Assigned");

@@ -20,15 +20,9 @@ import static org.apache.logging.log4j.LogManager.getLogger;
 @Repository
 public class ProfessorDaoImplementation implements ProfessorDao {
 	private static final Logger LOGGER = getLogger(ProfessorDaoImplementation.class);
-	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-	static final String DB_URL = "jdbc:mysql://localhost:3306/crs";
 
 	@Autowired
 	ConfigurationJDBC configurationJDBC;
-
-	static final String USER = "root";
-	static final String PASS = "password";
-
 
 
 	Connection connection = null;
@@ -39,9 +33,6 @@ public class ProfessorDaoImplementation implements ProfessorDao {
 	public List<Course> getCoursesByProfessorId(int profId) throws SQLException {
 		List<Course> professorCourses = new ArrayList<Course>();
 		try {
-
-//			Class.forName(JDBC_DRIVER);
-//			connection = DriverManager.getConnection(DB_URL, USER, PASS);
 			connection = configurationJDBC.dataSource().getConnection();
 			statement = connection.prepareStatement(SQLQueriesConstants.VIEW_PROFESSOR_COURSES);
 			statement.setInt(1, profId);
@@ -52,6 +43,10 @@ public class ProfessorDaoImplementation implements ProfessorDao {
 				// c1.setInstructorId(rs.getString("instructorId"));
 				c1.setCourseCode(rs.getString("courseCode"));
 				c1.setName(rs.getString("courseName"));
+				c1.setIsOffered(rs.getBoolean("isOffered"));
+				c1.setSeats(rs.getInt("seats"));
+				c1.setFees(rs.getInt("fee"));
+				c1.setInstructorId(profId);
 				professorCourses.add(c1);
 			}
 		} catch (Exception e) {
@@ -68,8 +63,7 @@ public class ProfessorDaoImplementation implements ProfessorDao {
 		List<EnrolledStudent> enrolledStudents = new ArrayList<EnrolledStudent>();
 
 		try {
-			Class.forName(JDBC_DRIVER);
-			connection = DriverManager.getConnection(DB_URL, USER, PASS);
+			connection = configurationJDBC.dataSource().getConnection();
 			statement = connection.prepareStatement(SQLQueriesConstants.VIEW_ENROLLED_STUDENTS);
 			statement.setInt(1, profId);
 			rs = statement.executeQuery();
@@ -83,7 +77,7 @@ public class ProfessorDaoImplementation implements ProfessorDao {
 			}
 
 		} catch (Exception e1) {
-			LOGGER.error("No Student have enrolled to your Course");
+			LOGGER.error("No Student have enrolled to given course");
 		} finally {
 			statement.close();
 			connection.close();
@@ -97,7 +91,7 @@ public class ProfessorDaoImplementation implements ProfessorDao {
 		Boolean updated = false;
 
 		try {
-			connection = DriverManager.getConnection(DB_URL, USER, PASS);
+			connection = configurationJDBC.dataSource().getConnection();
 			statement = connection.prepareStatement(SQLQueriesConstants.ADD_GRADE);
 			statement.setString(1, grade);
 			statement.setString(2, courseCode);
