@@ -16,7 +16,7 @@ public interface AdminService {
 
 	public void approveStudent(int studentId);
 
-	public void assignCourse(String courseCode, String professorId);
+	public void assignCourse(String courseCode, int professorId);
 
 	public void deleteCourse(String courseCode);
 

@@ -1,5 +1,6 @@
 package com.crs.lt.restcontroller;
 
+import com.crs.lt.dao.AdminDao;
 import com.crs.lt.dao.AdminDaoImplementation;
 import com.crs.lt.model.Course;
 import com.crs.lt.model.Professor;
@@ -22,7 +23,7 @@ public class AdminRestController {
     private static final Logger LOGGER = getLogger(AdminRestController.class);
 
     @Autowired
-    private AdminDaoImplementation adminDao;
+    private AdminDao adminDao;
 
     /**
      * Api for retreiving the list of courses
@@ -95,29 +96,33 @@ public class AdminRestController {
      * @param studentId
      */
     @PutMapping("/approve-student/{studentId}")
-    public void approveStudent(@PathVariable int studentId) {
+    public @ResponseBody  String approveStudent(@PathVariable int studentId) {
         try {
             adminDao.approveStudent(studentId);
             System.out.println("Student is Successfully approved");
+            return "Student is Successfully approved";
         } catch (Exception e) {
             e.printStackTrace();
             LOGGER.error("Student is not approved");
         }
+        return "Student is not approved";
     }
 
     /**
      * @param professorId
      * @param courseCode
      */
-    @PutMapping("/assign-course/{professorId}")
-    public void assignCourse(@PathVariable String professorId, String courseCode) {
+    @PutMapping("/assign-course/{courseCode}/{professorId}")
+    public @ResponseBody  String assignCourse(@PathVariable int professorId, @PathVariable String courseCode) {
         try {
-            adminDao.assignCourse(professorId, courseCode);
+            adminDao.assignCourse( courseCode, professorId);
             System.out.println("Course Successfully Assigned");
+            return "Course Successfully Assigned";
         } catch (Exception e) {
             e.printStackTrace();
             LOGGER.error("Professor can't be assigned to given course");
         }
+        return "Unable to assign course" ;
     }
 
 }

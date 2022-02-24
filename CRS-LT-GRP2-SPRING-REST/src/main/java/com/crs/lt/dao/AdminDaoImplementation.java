@@ -102,8 +102,6 @@ public class AdminDaoImplementation implements AdminDao {
 	@Override
 	public void addProfessor(Professor professor) throws SQLException {
 		try {
-//			Class.forName(JDBC_DRIVER);
-//			connection = DriverManager.getConnection(DB_URL, USER, PASS);
 			connection = configurationJDBC.dataSource().getConnection();
 
 			statement = connection.prepareStatement(SQLQueriesConstants.ADD_USER);
@@ -146,7 +144,7 @@ public class AdminDaoImplementation implements AdminDao {
 	}
 
 	@Override
-	public void assignCourse(String courseCode, String professorId) throws SQLException {
+	public void assignCourse(String courseCode, int professorId) throws SQLException {
 		try {
 //			Class.forName(JDBC_DRIVER);
 //			connection = DriverManager.getConnection(DB_URL, USER, PASS);
